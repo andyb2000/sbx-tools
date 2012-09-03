@@ -1,0 +1,17 @@
+[Settings]
+Colour=$C0C0C0
+Text Colour=$000000
+Take News=1
+Pref Tempo=50
+Pref Power=50
+Pref BPM=50
+
+[Clock]
+S,C$00000060
+S,C$00000102
+S,C$000000F3
+S,C$00000102
+S,C$000000F4
+S,C$00000102
+S,C$00000046
+
