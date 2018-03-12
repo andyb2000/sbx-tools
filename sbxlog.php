@@ -72,8 +72,8 @@ $fromtime=$_REQUEST["fromtime"];
 $totime=$_REQUEST["totime"];
 $filtermusic=$_REQUEST["filtermusic"];
 
-if (!$fromtime) {$fromtime="00";};
-if (!$totime) {$totime="23";};
+if (!$fromtime) {$fromtime="09";};
+if (!$totime) {$totime="11";};
 
 $load_mysql=mysql_query("select * from sbxlog where startdate='$mysql_date' and hour(starttime) between $fromtime and $totime and sbxcomputer='$studioselect' order by startdate,starttime,enddate,endtime") or die("Failed to query sbxlog ".mysql_error());
 ?>
@@ -102,11 +102,12 @@ From (Hour only):<input type=text name='fromtime' size=3 value='<?=$fromtime?>'>
 <?php
 echo "</form></center><BR>\n";
 
+flush();
+set_time_limit(300);
 get_all_carts();
 get_all_artists();
 get_all_artilink();
 get_all_catalogues();
-
 // print_r($sbx_cartarray);
 //[28] => Array
 //        (

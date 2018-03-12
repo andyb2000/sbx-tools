@@ -71,6 +71,7 @@ self.close();
 <table border=1 cellpadding=0 cellspacing=0 width=85%>
 <tr>
 <th>Title</th>
+<th>Length (sec)</th>
 <th>&nbsp;</th>
 </tr>
 
@@ -86,6 +87,8 @@ foreach($sbx_cartarray as $sbxcartid => $sbxcartdata) {
 	$cartlist_csv=substr($cartlist,2);
 	$cartlist_array=explode(",",$cartlist_csv);
 	$cartindex=$sbxcartdata['CartIndex'];
+	$advert_length=$sbxcartdata['Length']/1000;
+	echo "<td>".gmdate("i:s", $advert_length)."</td>\n";
 	echo "<td><center><input type=button value='Add' onclick=\"Javascript:var a=window.open('advertcollections_pop.php?action=modify&cartid=$cartid&adid=$cartindex','winpop','width=300,height=400,location=0,resizable=1');\"></center></td>\n";
 	echo "</tr>\n";
 	};

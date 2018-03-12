@@ -96,6 +96,7 @@ $sbx_cartarray=php_multisort($sbx_cartarray, array(array('key'=>'Title')));
 
 foreach($sbx_cartarray as $sbxcartid => $sbxcartdata) {
 	if ($sbxcartdata['Catalogue'] == "73") {
+	$advert_length=0;
 	echo "<tr onMouseOver=\"this.bgColor='darkblue';\" onMouseOut=\"this.bgColor='#000000';\">";
 	echo "<td>$sbxcartid ".$sbxcartdata['Title']."</td>";
 	$cartlist=$sbxcartdata['Filename'];
@@ -107,15 +108,22 @@ foreach($sbx_cartarray as $sbxcartid => $sbxcartdata) {
 //		echo "$sbx_cartentry<BR>\n";
 		$foundcart=lookupcartindex($sbx_cartentry);
 //		if ($foundcart) {
+			$crt_length=$sbx_cartarray[$foundcart]['Length'];
 			$artist_id=artistlookup($sbx_cartentry);
 			$safe_title=urlencode($sbx_cartarray[$foundcart]['Title']);
-        		echo (!empty($sbx_cartarray[$foundcart]['Title']))? "<a title='".$sbx_cartarray[$foundcart]['Title']."' href='Javascript:if(confirm(\"Are you sure you wish to delete advert ".$safe_title."\")) {self.location=\"advertcollections.php?action=modifybreak&breakid=".$sbx_cartarray[$foundcart]['CartIndex']."&collection=$sbxcartid\";} else {alert(\"IGNORE\")};'><font color=#FFFFFF>".$sbx_cartarray[$foundcart]['Title']."</font></a>" : "&nbsp;";
+			$ad_lt=$sbx_cartarray[$foundcart]['Length']/1000;
+        		// echo (!empty($sbx_cartarray[$foundcart]['Title']))? "<a title='".$sbx_cartarray[$foundcart]['Title']."' href='Javascript:if(confirm(\"Are you sure you wish to delete advert ".$safe_title."\")) {self.location=\"advertcollections.php?action=modifybreak&breakid=".$sbx_cartarray[$foundcart]['CartIndex']."&collection=$sbxcartid\";} else {alert(\"IGNORE\")};'><font color=#FFFFFF>".$sbx_cartarray[$foundcart]['Title']." (".gmdate("i:s", $ad_lt).") ID:".$sbx_cartentry."</font></a>" : "&nbsp;";
+			echo "<a title='".$sbx_cartarray[$foundcart]['Title']."' href='Javascript:if(confirm(\"Are you sure you wish to delete advert ".$safe_title."\")) {self.location=\"advertcollections.php?action=modifybreak&breakid=".$sbx_cartentry."&collection=$sbxcartid\";} else {alert(\"IGNORE\")};'><font color=#FFFFFF>".$sbx_cartarray[$foundcart]['Title']." (".gmdate("i:s", $ad_lt).") ID:".$sbx_cartentry."</font></a>\n";
 			echo "<BR>\n";
 //		};
+		$advert_length=$advert_length+$crt_length;
 	};
 	echo "</td>";
 	$cartindex=$sbxcartdata['CartIndex'];
-	echo "<td><center><input type=button value='Insert Advert' onclick=\"Javascript:var a=window.open('advertcollections_pop.php?action=modify&cartid=$sbxcartid','winpop','width=500,height=300,location=0,resizable=1,scroll=1,scrollbars=1');\"></center></td>\n";
+	echo "<td><center><input type=button value='Insert Advert' onclick=\"Javascript:var a=window.open('advertcollections_pop.php?action=modify&cartid=$sbxcartid','winpop','width=500,height=300,location=0,resizable=1,scroll=1,scrollbars=1');\"><BR>";
+	$advert_length=$advert_length/1000;
+	echo "Break length: ".gmdate("i:s", $advert_length). "(mm:ss)";
+	echo "</center></td>\n";
 	echo "</tr>\n";
 	};
 };
