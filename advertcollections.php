@@ -58,16 +58,32 @@ if(!px_open_fp($pxdoc_write, $fp_write)) {
                 };
 	$out_break_list="C:".implode(",",$out_break_list_array);
 	$new_details_array=array('CartIndex'=>$px_cart_info['CartIndex'],'BPM'=>$px_cart_info['BPM'],'Catalogue'=>$px_cart_info['Catalogue'],'FadeTime'=>$px_cart_info['FadeTime'],'Filename'=>$out_break_list,'FileLocation'=>$px_cart_info['FileLocation'],'Flags'=>$px_cart_info['Flags'],'Energy'=>$px_cart_info['Energy'],'Extro'=>$px_cart_info['Extro'],'ExtIndex'=>$px_cart_info['ExtIndex'],'HWControl'=>$px_cart_info['HWControl'],'Intro'=>$px_cart_info['Intro'],'IOControl'=>$px_cart_info['IOControl'],'Length'=>$break_total_time,'Notes'=>$px_cart_info['Notes'],'SBxAudio'=>$px_cart_info['SBxAudio'],'Start'=>$px_cart_info['Start'],'Sway'=>$px_cart_info['Sway'],'Tempo'=>$px_cart_info['Tempo'],'Title'=>$px_cart_info['Title'],'UserIndex'=>$px_cart_info['UserIndex'],'Volume'=>$px_cart_info['Volume']);
+	
 // echo "<BR><B>NOT UPDATING!</B><BR>\n";
-	$do_updater=px_update_record($pxdoc_write,$new_details_array,$collection);
+
+//	22/05/2019 - new method via OOP method as apparently this works
+// first close current connection:
 	px_close($pxdoc_write);
 	px_delete($pxdoc_write);
 	fclose($fp_write);
-?>
-<script language=Javascript>
-self.location='advertcollections.php';
-</script>
-<?php
+	echo "Closed old method, starting new method:<BR>\n";
+	// Now open it again in OOP method:
+	$fp_write = fopen("/mnt/soundbox/Data/Cart.DB", "r+");
+	$pxdoc = new paradox_db();
+if(!$pxdoc->open_fp($fp_write)) {
+        echo "Error opening /mnt/soundbox/Data/Cart.DB for get_all_carts() using OOP method<BR>\n";
+        die();
+}
+	$pxdoc->update_record($new_details_array,$collection);
+	$pxdoc->close();
+	fclose($fp_write);
+	echo "DONE! New px_update_record method for Paradox worked. PLEASE WAIT, RELOADING....<BR>\n";
+
+echo "<script language=Javascript>\n";
+echo "self.location='advertcollections.php';\n";
+echo "</script>\n";
+echo "DONE, ending<BR>\n";
+die();
 };
 
 ?>
